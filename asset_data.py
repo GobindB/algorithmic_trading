@@ -1,5 +1,6 @@
 import pandas as pd 
-import numpy as np 
+import numpy as np
+import matplotlib.pyplot as plt
 
 # exchange rate link:
 # https://open.canada.ca/data/en/dataset/1bc25b1e-0e02-4a5e-afd7-7b96d6728aac
@@ -9,21 +10,19 @@ import numpy as np
 # load csv file
 url = "https://raw.githubusercontent.com/GobindB/algorithmic_trading/master/10100008.csv"
 
-types = {'REF_DATE' : int, 'VALUE' :int}
-# Lines with too many fields (e.g. a csv line with too many commas)
-# will by default cause an exception to be raised
-rates = pd.read_csv(url, error_bad_lines=False, dtype=types)
-
-# dictionary key method not preffered to .get() method - medium article
-
 # pick preffered columns
 rates_cols=['REF_DATE', 'VALUE']
 
+# Lines with too many fields (e.g. a csv line with too many commas)
+# will by default cause an exception to be raised
+rates = pd.read_csv(url, error_bad_lines=False, usecols = ['REF_DATE', 'VALUE', 'Type of currency'])
+
+# dictionary key method not preffered to .get() method - medium article
 # selet only closing spot price for currency pair
 rates=rates[rates['Type of currency']=='United States dollar, closing spot rate']
 
 # use only required columns and fill all null values with 0
-rates=[rates_cols].fillna(0)
+rates=rates[rates_cols].fillna(0)
 
 # creates a common index with CSV data
 rates.index = pd.to_datetime(rates['REF_DATE'])
@@ -45,3 +44,4 @@ rates.drop(['yesterday'], axis=1, inplace=True)
 
 rates.plot()
 rates.tail()
+plt.show()
