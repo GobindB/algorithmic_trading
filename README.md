@@ -1,3 +1,3 @@
-# algorithmic_trading
+# asset_data_exploration
 
-A predictive, backtested, market data parameterized trading model.
+Simple EDA of asset and USD-CAD trends.
